@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HidroSensorBluetooth</string>
+    <string name="app_name">HidroSensorConfig</string>
     <string name="title">Control de Datos</string>
     <string name="lbl1">Nombre de Usuario</string>
     <string name="lbl2">Id_Tanque</string>
@@ -10,5 +10,6 @@
     <string name="user">Ejemplo: user1@controler.mx</string>
     <string name="passwordWifi">Contraseña de red WiFi</string>
     <string name="btnEnviar">Enviar Datos</string>
+    <string name="conectando">Conectando a la red HidroSensorConfig</string>
 
 </resources>

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bluetooth.hidrosensorbluetooth">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -12,10 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HidroSensorBluetooth">
         <activity
-            android:name=".CargarRed"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".CargarRed"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
