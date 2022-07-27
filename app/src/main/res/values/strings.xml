@@ -2,11 +2,13 @@
     <string name="app_name">HidroSensorBluetooth</string>
     <string name="title">Control de Datos</string>
     <string name="lbl1">Nombre de Usuario</string>
-    <string name="lbl2">Contraseña</string>
-    <string name="txt1">ejemplo: user1</string>
+    <string name="lbl2">Id_Tanque</string>
+    <string name="txt1">Id</string>
     <string name="password">Contraseña</string>
     <string name="ssid">WiFi SSID (Nombre de red Wifi)</string>
-    <string name="wifi">ejemplo: Infinitum98B</string>
+    <string name="wifi">Ejemplo: Infinitum98B</string>
+    <string name="user">Ejemplo: user1@controler.mx</string>
     <string name="passwordWifi">Contraseña de red WiFi</string>
+    <string name="btnEnviar">Enviar Datos</string>
 
 </resources>
