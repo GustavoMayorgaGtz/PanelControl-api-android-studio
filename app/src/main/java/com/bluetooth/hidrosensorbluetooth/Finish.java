@@ -17,6 +17,6 @@ public class Finish extends AppCompatActivity {
         SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String resultado = myPreferences.getString("Dic", "DEFAULT");
         tv = (TextView) findViewById(R.id.result);
-        tv.setText(resultado);
+        tv.setText("Registro completado, conectate a tu red y ingresa al sitio: "+resultado+" para ver datos de tu tanque");
     }
 }
