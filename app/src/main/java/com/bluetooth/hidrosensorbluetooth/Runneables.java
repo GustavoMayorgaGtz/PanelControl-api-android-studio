@@ -36,9 +36,9 @@ public class Runneables {
 
                 if (iterator == 1) {
                     System.out.println("Iterator: " + iterator);
-                    System.out.println("Lanzando peticion");
+                    System.out.println("Lanzando peticion GET DEFAULT");
                     Api api = new Api(context);
-                    api.get("http://192.168.5.1");
+                    api.get("http://192.168.4.1", 1);
                     trigger1.postDelayed(getData, 1000);
                 }
             }
@@ -48,38 +48,39 @@ public class Runneables {
         @Override
         public void run() {
             response1 = api.RESPONSE;
-            System.out.println("respuesta: 98789:::");
+            System.out.println("/******RESPUESTA*****/");
             System.out.println(response1);
-            if (response1 != null)
+            if (response1 != null) {
+                /***************************/
                 if (response1.equals("ok")) {
                     iterator = 10;
                     trigger1.post(notificacion);
                 }
-            if (response1 != null)
-            if (response1.contains("http")) {
-                SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor myEditor = myPreferences.edit();
-                myEditor.putString("Dic", response1);
-                myEditor.commit();
-                System.out.println("Salida");
-                String preference = myPreferences.getString("Dic", "DEFAULT");
-                System.out.println(preference);
-                System.out.println("Iterator: " + iterator);
-                System.out.println("Lanzando peticion reset");
-                trigger1.postDelayed(request2, 2000);
-            }
-            if (response1 != null)
-                if (response1.contains("Success!")) {
+                /*************************/
+                if (response1.contains("http")) {
+                    SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor myEditor = myPreferences.edit();
+                    myEditor.putString("Dic", response1);
+                    myEditor.commit();
+
+                    String preference = myPreferences.getString("Dic", "DEFAULT");
+                    System.out.println(preference);
+
+                    trigger1.postDelayed(request2, 5000);
+                }
+                /*************************/
+                if (response1.contains("finish")) {
                     alert = new AlertDialog.Builder(context);
                     alert.setTitle("Registro Completado");
                     SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                    alert.setMessage("Conectate de nuevo a tu red y busca "+myPreferences.getString("Dic","DEFAULT"));
+                    alert.setMessage("Conectate de nuevo a tu red y busca " + myPreferences.getString("Dic", "DEFAULT"));
                     alert.show();
                 }
-
-            if (response1 == null || response1 == "") {
+            }else
+            {
                 trigger1.postDelayed(this, 1000);
             }
+
         }
     };
 
@@ -95,8 +96,8 @@ public class Runneables {
             Map<String, String> params = new HashMap<String, String>();
             params.put("username","");
             System.out.println("Entrando a reset");
-            api.post("http://192.168.5.1/reset", params);
-            trigger1.postDelayed(getData, 2000);
+            api.post("http://192.168.4.1/reset", params, 2);
+            trigger1.postDelayed(getData, 1000);
         }
     };
 
