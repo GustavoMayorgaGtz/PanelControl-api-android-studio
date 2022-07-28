@@ -27,6 +27,21 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     /*******************************Objetos de Conexion*************************************/
     Conexion conexion;
+    Handler handler = new Handler();
+    Runnable run = new Runnable() {
+        @Override
+        public void run() {
+            //Checar la conexion para deshabilitar o no el boton
+            if(conexion.status.equals("connected"))
+            {
+                enviar.setVisibility(View.VISIBLE);
+            }else
+            {
+                enviar.setVisibility(View.INVISIBLE);
+            }
+            handler.postDelayed(this, 1000);
+        }
+    };
     /*************************************************************************************/
     Api api;
     TextView textView;
@@ -49,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         enviar = (Button) findViewById(R.id.btn_Enviar);
         enviar.setOnClickListener(this::onClick);
         alertDialog = new AlertDialog.Builder(this);
-
+        handler.post(run);
     }
     /*************************************************************************************/
 

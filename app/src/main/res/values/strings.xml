@@ -11,5 +11,6 @@
     <string name="passwordWifi">Contraseña de red WiFi</string>
     <string name="btnEnviar">Enviar Datos</string>
     <string name="conectando">Conectate a la red HidroSensorConfig</string>
+    <string name="todo">TODO</string>
 
 </resources>

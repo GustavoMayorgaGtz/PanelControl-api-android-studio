@@ -1,6 +1,7 @@
 package com.bluetooth.hidrosensorbluetooth;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -73,8 +74,8 @@ public class Runneables {
                     alert = new AlertDialog.Builder(context);
                     alert.setTitle("Registro Completado");
                     SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                    alert.setMessage("Conectate de nuevo a tu red y busca " + myPreferences.getString("Dic", "DEFAULT"));
-                    alert.show();
+                     Intent i = new Intent(context, Finish.class);
+                     context.startActivity(i);
                 }
             }else
             {

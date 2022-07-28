@@ -3,6 +3,9 @@ package com.bluetooth.hidrosensorbluetooth;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -24,21 +27,39 @@ public class Conexion {
     Runnable checkConnection = new Runnable() {
         @Override
         public void run() {
-            System.out.println("Monitoreando la conexion");
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            ssid = wifiInfo.getSSID();
-            if (ssid.equals("\"HidroSensorConfig\"")) {
-                  status = "connected";
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+            if (networkInfo != null && networkInfo.isConnected()) {
+                // Si hay conexión a Internet en este momento
+                System.out.println(networkInfo.getState());
+                System.out.println(networkInfo.isConnected());
+                System.out.println(networkInfo.getExtraInfo());
+                if (networkInfo.getExtraInfo().equals("\"HidroSensorConfig\"") && networkInfo.getState()== NetworkInfo.State.CONNECTED && networkInfo.isConnected()) {
+                    status = "connected";
+                    System.out.println("/***********CONECTADO****************/");
+                    trigger.postDelayed(this, 1000);
+                } else {
+                    trigger.post(run);
+                    status = "disconnected";
+                }
             } else {
                 trigger.post(run);
+                status = "disconnected";
+                // No hay conexión a Internet en este momento
             }
+
+            System.out.println("Monitoreando la conexion:");
+
+
+
         }
     };
-    public  Runnable run = new Runnable() {
+    public Runnable run = new Runnable() {
         @Override
         public void run() {
+            System.out.println("Tratando de conectar");
             wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
-
             if ((wifiManager.isWifiEnabled() == false)) {
                 Toast.makeText(context, "Conectando a WIFI...", Toast.LENGTH_LONG).show();
                 wifiManager.setWifiEnabled(true);
@@ -47,7 +68,6 @@ public class Conexion {
             @SuppressLint("MissingPermission") List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
             for (WifiConfiguration i : list) {
                 if (i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
-                    wifiManager.disconnect();
                     wifiManager.enableNetwork(i.networkId, true);
                     wifiManager.reconnect();
 
@@ -58,8 +78,7 @@ public class Conexion {
         }
     };
 
-    Conexion(Context context)
-    {
+    Conexion(Context context) {
         this.context = context;
         conf.SSID = "\"" + networkSSID + "\"";
         conf.preSharedKey = "\"" + networkPass + "\"";
