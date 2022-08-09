@@ -2,10 +2,14 @@ package com.bluetooth.hidrosensorbluetooth;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -23,20 +27,19 @@ import java.util.List;
 import java.util.Map;
 
 
-
 public class MainActivity extends AppCompatActivity {
     /*******************************Objetos de Conexion*************************************/
     Conexion conexion;
+    Runneables runa;
     Handler handler = new Handler();
     Runnable run = new Runnable() {
         @Override
         public void run() {
             //Checar la conexion para deshabilitar o no el boton
-            if(conexion.status.equals("connected"))
-            {
+
+            if (conexion.status.equals("connected")) {
                 enviar.setVisibility(View.VISIBLE);
-            }else
-            {
+            } else if((runa.iterator < 9 && runa.iterator > 1) || !conexion.status.equals("connected")){
                 enviar.setVisibility(View.INVISIBLE);
             }
             handler.postDelayed(this, 1000);
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     /*************************************************************************************/
     Api api;
     TextView textView;
-    EditText username, tanqueid, ssid, password;
+    EditText  ssid, password;
     Button enviar;
     AlertDialog.Builder alertDialog;
 
@@ -57,33 +60,29 @@ public class MainActivity extends AppCompatActivity {
 
         conexion = new Conexion(this);
 
-        username = (EditText) findViewById(R.id.username);
-        tanqueid = (EditText) findViewById(R.id.tanqueID);
+
         ssid = (EditText) findViewById(R.id.ssid);
         password = (EditText) findViewById(R.id.password);
         enviar = (Button) findViewById(R.id.btn_Enviar);
         enviar.setOnClickListener(this::onClick);
         alertDialog = new AlertDialog.Builder(this);
+
         handler.post(run);
     }
+
     /*************************************************************************************/
 
-    public void onClick(View view)
-    {
+    public void onClick(View view) {
         System.out.println("Entro por aqui");
-        switch(view.getId())
-        {
-            case R.id.btn_Enviar:{
-                String usernameText = username.getText().toString();
-                String tanqueidText = tanqueid.getText().toString();
+        switch (view.getId()) {
+            case R.id.btn_Enviar: {
+
                 String ssidText = ssid.getText().toString();
                 String passwordText = password.getText().toString();
                 Functions functions = new Functions();
-                if(functions.CheckisEmpty(usernameText) && functions.CheckisEmpty(tanqueidText) && functions.CheckisEmpty(ssidText) && functions.CheckisEmpty(passwordText))
-                {
-                     SendData(usernameText,tanqueidText, ssidText, passwordText);
-                }else
-                {
+                if ( functions.CheckisEmpty(ssidText) && functions.CheckisEmpty(passwordText)) {
+                    SendData( ssidText, passwordText);
+                } else {
                     alertDialog.setTitle("Notificacion");
                     alertDialog.setMessage("Faltan datos por completar en el formulario \uD83D\uDE41");
                     alertDialog.create();
@@ -93,17 +92,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     /*************************************************************************************/
-    void SendData(String username, String idtanque, String ssid, String password)
-    {
+    void SendData(String ssid, String password) {
         Map<String, String> params = new HashMap<String, String>();
-        params.put("username", username);
-        params.put("idtanque", idtanque);
+
         params.put("ssid", ssid);
         params.put("passid", password);
         api = new Api(this);
         api.post("http://192.168.4.1", params, 1);
-        Runneables runa = new Runneables(api);
+        runa = new Runneables(api, this);
         runa.request1(this);
     }
     /*************************************************************************************/

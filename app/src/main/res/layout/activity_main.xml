@@ -20,43 +20,17 @@
         tools:context=".MainActivity">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:labelFor="@id/username"
-            android:text="@string/lbl1"
-            android:textColor="#4A6983"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:labelFor="@id/tanqueID"
-            android:text="@string/lbl2"
-            android:textColor="#4A6983"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/username" />
-
-        <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="60px"
             android:labelFor="@id/ssid"
             android:text="@string/ssid"
             android:textColor="#4A6983"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tanqueID" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView5"
@@ -70,43 +44,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ssid" />
-
-        <EditText
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/user"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="user1@controler.mx"
-            android:textColorHint="#757575"
-            android:textColorLink="#3F51B5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:ignore="DuplicateSpeakableTextCheck" />
-
-        <EditText
-            android:id="@+id/tanqueID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/txt1"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="admin"
-            android:textColorLink="#3F51B5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4"
-            tools:ignore="DuplicateSpeakableTextCheck" />
 
         <EditText
             android:id="@+id/ssid"

@@ -18,9 +18,31 @@ public class Runneables {
     public static Context context;
     public static AlertDialog.Builder alert;
 
+    /*****CONEXION*****/
+    Handler conexionTrigger = new Handler();
+    public static boolean status = false;
+    Conexion conexion;
+    Runnable checkConnection = new Runnable() {
+        @Override
+        public void run() {
+          if(conexion.status == "connected")
+          {
+              status = true;
+          }else
+          {
+              status = false;
+          }
+          conexionTrigger.postDelayed(this, 1000);
+        }
+    };
 
-    Runneables(Api api) {
+    /*****************/
+
+
+    Runneables(Api api, Context context) {
+        conexion = new Conexion(context);
         this.api = api;
+        conexionTrigger.post(checkConnection);
     }
 
     /********************REQUEST1**********************/
@@ -31,8 +53,12 @@ public class Runneables {
         @Override
         public void run() {
             if (iterator > 0) {
-                Toast.makeText(context, "Espera " + iterator + " segundos.", Toast.LENGTH_SHORT).show();
-                iterator--;
+                Toast.makeText(context, "Espera "+iterator+" tiempos.", Toast.LENGTH_SHORT).show();
+                if(status)
+                {
+                    iterator--;
+                }
+
                 trigger1.postDelayed(this, 3000);
 
                 if (iterator == 1) {
@@ -48,41 +74,51 @@ public class Runneables {
     public static Runnable getData = new Runnable() {
         @Override
         public void run() {
-            response1 = api.RESPONSE;
-            System.out.println("/******RESPUESTA*****/");
-            System.out.println(response1);
-            if (response1 != null) {
-                /***************************/
-                if (response1.equals("ok")) {
-                    iterator = 10;
-                    trigger1.post(notificacion);
-                }
-                /*************************/
-                if (response1.contains("http")) {
-                    SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                    SharedPreferences.Editor myEditor = myPreferences.edit();
-                    myEditor.putString("Dic", response1);
-                    myEditor.commit();
+                response1 = api.RESPONSE;
+                System.out.println("/**************RESPUESTA*************/");
+                System.out.println(response1);
+                System.out.println("/************************************/");
+                if (response1 != null) {
+                    /***************************/
+                    if (response1.equals("ok")) {
+                        iterator = 10;
+                        trigger1.post(notificacion);
+                    }
+                    /*************************/
+                    if (response1.contains("http")) {
+                        SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                        SharedPreferences.Editor myEditor = myPreferences.edit();
+                        myEditor.putString("Dic", response1);
+                        myEditor.commit();
 
-                    String preference = myPreferences.getString("Dic", "DEFAULT");
-                    System.out.println(preference);
+                        String preference = myPreferences.getString("Dic", "DEFAULT");
+                        System.out.println(preference);
 
-                    trigger1.postDelayed(request2, 5000);
+                        trigger1.postDelayed(request2, 5000);
+                    }
+                    /*************************/
+                    if (response1.contains("errorConnection")) {
+                        alert = new AlertDialog.Builder(context);
+                        alert.setTitle("Error de Conexion ❌");
+                        alert.setMessage("Hubo un error en la conexion WiFi, contraseña o nombre de red incorrectas.");
+                        alert.create();
+                        alert.show();
+                        Api api = new Api(context);
+                        api.get("http://192.100.4.1/error", 400);
+                        trigger1.postDelayed(this, 2000);
+                    }
+                    /*************************/
+                    if (response1.contains("finish")) {
+                        alert = new AlertDialog.Builder(context);
+                        alert.setTitle("Registro Completado");
+                        SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                        Intent i = new Intent(context, Finish.class);
+                        context.startActivity(i);
+                    }
+                } else {
+                    trigger1.postDelayed(this, 1000);
                 }
-                /*************************/
-                if (response1.contains("finish")) {
-                    alert = new AlertDialog.Builder(context);
-                    alert.setTitle("Registro Completado");
-                    SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                     Intent i = new Intent(context, Finish.class);
-                     context.startActivity(i);
-                }
-            }else
-            {
-                trigger1.postDelayed(this, 1000);
             }
-
-        }
     };
 
     public void request1(Context context) {

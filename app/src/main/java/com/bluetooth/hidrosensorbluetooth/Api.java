@@ -102,7 +102,7 @@ public class Api {
                     case 1:
                     {
                         alert.setTitle("Algo salio mal :(");
-                        alert.setMessage("Asegurate de estar conectado a Hidrosensor y vuelve a intentarlo");
+                        alert.setMessage("Asegurate de estar conectado a la red HidrosensorConfig y vuelve a intentarlo");
                         alert.setPositiveButton("Aceptar", null);
                         alert.create();
                         alert.show();
